@@ -51,7 +51,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mw4-Rv-uSn" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Eer-GC-bZj">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.72623820379126813" green="0.73691846762296453" blue="0.051154295302546678" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
