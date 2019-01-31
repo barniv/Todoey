@@ -13,13 +13,13 @@ class ToDoListViewController: UITableViewController {
     var itemArray : [Item] = [Item]()
     
     let defaults = UserDefaults.standard
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("items.plist")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        if let items = defaults.array(forKey: "ToDoListArray") as? [Item] {
-            itemArray = items
-        }
+        self.loadItems()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -38,6 +38,8 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+        self.saveItems()
         
         tableView.reloadData()
         
@@ -58,13 +60,37 @@ class ToDoListViewController: UITableViewController {
             let item : Item = Item()
             item.title = itemText.text!
             self.itemArray.append(item)
-            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            self.saveItems()
+            
             self.tableView.reloadData()
             }
         
         alert.addAction(action)
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveItems() {
+        let encoder = PropertyListEncoder()
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array")
+        }
+    }
+    
+    func loadItems() {
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                self.itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("can't decode the data")
+            }
+            
+        }
     }
 }
 
